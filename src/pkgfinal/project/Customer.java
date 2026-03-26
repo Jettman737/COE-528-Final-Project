@@ -6,15 +6,14 @@ package pkgfinal.project;
 
 import java.util.ArrayList;
 
-
-/**
- *
- * @author Jettman737
- */
 public class Customer extends User {
     private int points;
     private String status;
-    
+
+    public Customer(String username, String password) {
+        super(username, password);
+    }
+
     public void viewBooks(){};
     
     public void buyBooks(ArrayList<Book> cart){};
@@ -30,3 +29,4 @@ public class Customer extends User {
     public void earnPoints(double moneySpent){};
     public void viewPointsAndStatus(){};
 }
+
