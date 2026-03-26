@@ -24,7 +24,7 @@ public class User {
         this.Username = Username;
     }
     public String getPassword(){
-        return Username;
+        return Password;
     }
     public void setPassword(String password){
         this.Password = password;
