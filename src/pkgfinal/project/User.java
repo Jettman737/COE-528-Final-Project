@@ -4,19 +4,29 @@
  */
 package pkgfinal.project;
 
-/**
- *
- * @author Jettman737
- */
 public class User {
     private String Username;
     private String Password;
-    
-    public String getUsername(){
-    return Username;
+
+    public User(String username, String password) {
+        Username = username;
+        Password = password;
     }
-    
+
+    public User() {
+
+    }
+
+    public String getUsername(){
+        return Username;
+    }
+    public void setUsername(String username){
+        this.Username = Username;
+    }
     public String getPassword(){
-    return Username;
+        return Username;
+    }
+    public void setPassword(String password){
+        this.Password = password;
     }
 }
