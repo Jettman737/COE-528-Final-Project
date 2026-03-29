@@ -121,6 +121,7 @@ public class Customer extends User {
      */
     public void addPoints(int p) {
         this.points += p;
+        if (this.points < 0) this.points = 0;
     }
 
     /**
@@ -147,21 +148,17 @@ public class Customer extends User {
         if (cart == null || cart.isEmpty()) return;
 
         double originalCost = viewCartCost(cart);
-        double discount = calculateDiscount();
 
-        double finalCost;
-        int pointsRedeemed;
+    
+        int beforePoints = this.points;
 
-        if (discount >= originalCost) {
-            finalCost = 0;
-            pointsRedeemed = (int) (originalCost * 100);
-        } else {
-            finalCost = originalCost - discount;
-            pointsRedeemed = (int) (discount * 100);
-        }
+ 
+        double finalCost = status.redeemPoints(this, originalCost);
 
-        this.points -= pointsRedeemed;
-        if (this.points < 1000) { status = new SilverState();
+    
+        int afterPoints = this.points;
+        int pointsRedeemed = beforePoints - afterPoints;
+        
 
         earnPoints(finalCost);
 
