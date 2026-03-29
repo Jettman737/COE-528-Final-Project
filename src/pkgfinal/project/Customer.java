@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class Customer extends User {
     private int points;
-    private StatusState status; // State Object handles the membership logic
-    private BookStoreSystem store;
+    private StatusState status;
+    private final BookStoreSystem store;
 
     /**
      * Constructor for Customer.
@@ -21,7 +21,7 @@ public class Customer extends User {
         super(username, password);
         this.store = store;
         this.points = 0;
-        this.status = new SilverState(); // Default starting state
+        this.status = new SilverState();
         checkRep();
     }
 
@@ -67,10 +67,8 @@ public class Customer extends User {
 
         double totalCost = viewCartCost(cart);
 
-        // Use the State Pattern to handle point earning and status switching
         earnPoints(totalCost);
 
-        // Logic to remove books from store inventory would go here
         System.out.println("Purchase successful! Total: $" + totalCost);
     }
 
@@ -104,8 +102,6 @@ public class Customer extends User {
         System.out.println("Points: " + points + " | Status: " + status.getStatusName());
     }
 
-    // --- State Pattern Helper Methods ---
-
     /**
      * Updates the current status state (e.g., from SilverState to GoldState).
      */
@@ -132,6 +128,44 @@ public class Customer extends User {
      */
     public String getStatusString() {
         return status.getStatusName();
+    }
+
+    /**
+     * Calculates the discount amount based on current points.
+     * E: 100 points = $1 CAD discount.
+     */
+    public double calculateDiscount() {
+        return (double) this.points / 100;
+    }
+
+    /**
+     * Handles the "Redeem points and Buy" logic.
+     * TC = Original Cost - (Points / 100).
+     */
+    public void redeemAndBuy(ArrayList<Book> cart) {
+        checkRep();
+        if (cart == null || cart.isEmpty()) return;
+
+        double originalCost = viewCartCost(cart);
+        double discount = calculateDiscount();
+
+        double finalCost;
+        int pointsRedeemed;
+
+        if (discount >= originalCost) {
+            finalCost = 0;
+            pointsRedeemed = (int) (originalCost * 100);
+        } else {
+            finalCost = originalCost - discount;
+            pointsRedeemed = (int) (discount * 100);
+        }
+
+        this.points -= pointsRedeemed;
+
+        earnPoints(finalCost);
+
+        System.out.println("Redeemed " + pointsRedeemed + " points.");
+        System.out.println("Final Transaction Cost: $" + finalCost);
     }
 }
 
