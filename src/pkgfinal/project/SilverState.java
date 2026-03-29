@@ -8,10 +8,8 @@ package pkgfinal.project;
 public class SilverState implements StatusState {
     @Override
     public void handlePurchase(Customer customer, double amount) {
-        // Silver earns 1 point per $1
-        customer.addPoints((int)amount);
+        customer.addPoints((int)(amount * 10));
 
-        // Check for upgrade to Gold
         if (customer.getPoints() >= 1000) {
             customer.setStatus(new GoldState());
         }
