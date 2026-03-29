@@ -161,6 +161,7 @@ public class Customer extends User {
         }
 
         this.points -= pointsRedeemed;
+        if (this.points < 1000) { status = new SilverState();
 
         earnPoints(finalCost);
 
