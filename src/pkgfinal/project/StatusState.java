@@ -6,5 +6,6 @@ package pkgfinal.project;
  */
 public interface StatusState {
     void handlePurchase(Customer customer, double amount);
+    double redeemPoints(Customer customer, double totalCost);
     String getStatusName();
 }
