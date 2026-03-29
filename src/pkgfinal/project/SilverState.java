@@ -14,7 +14,17 @@ public class SilverState implements StatusState {
             customer.setStatus(new GoldState());
         }
     }
-
+    @Override
+    public double redeemPoints(Customer customer, double totalCost) {
+        double discount = customer.getPoints() / 100.0; // 100 pts = $1
+        if (discount >= totalCost) {
+            customer.addPoints(-(int)(totalCost * 100));
+            return 0.0;
+        } else {
+            customer.addPoints(-customer.getPoints());
+            return totalCost - discount;
+        }
+    }
     @Override
     public String getStatusName() {
         return "Silver";
