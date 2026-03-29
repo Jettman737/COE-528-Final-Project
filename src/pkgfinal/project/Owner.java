@@ -32,9 +32,13 @@ public class Owner extends User {
         }
     }
 
+    /**
+     * Transitions the UI from the main dashboard to the book management area.
+     */
     public void manageBooks() {
         checkRep();
-        // Logic to switch to OwnerBooksScreen GUI
+        OwnerBooksScreen booksTable = new OwnerBooksScreen(this.bookStoreSystem);
+        booksTable.setVisible(true);
     }
 
     /**
@@ -58,9 +62,13 @@ public class Owner extends User {
         System.out.println(book.getName() + " has been removed");
     }
 
+    /**
+     * Transitions the UI from the main dashboard to the customer management area.
+     */
     public void manageCustomer() {
         checkRep();
-        // Logic to switch to OwnerCustomerScreen GUI
+        OwnerCustomerScreen customersTable = new OwnerCustomerScreen(this.bookStoreSystem);
+        customersTable.setVisible(true);
     }
 
     /**
@@ -68,7 +76,7 @@ public class Owner extends User {
      */
     public void addCustomer(String username, String password) {
         checkRep();
-        Customer newCustomer = new Customer(username, password);
+        Customer newCustomer = new Customer(username, password, this.bookStoreSystem);
         bookStoreSystem.addCustomer(newCustomer);
         System.out.println(newCustomer.getUsername() + " has been added");
     }
