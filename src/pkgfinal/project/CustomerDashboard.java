@@ -1,68 +1,131 @@
 package pkgfinal.project;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CustomerDashboard extends JPanel {
+
+    private JLabel infoLabel;
+    private JTable bookTable;
 
     public CustomerDashboard() {
         setLayout(new BorderLayout());
 
-        JPanel bookPanel = new JPanel(new BorderLayout());
-        JLabel bookLabel = new JLabel("Available Books:");
-        bookLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        infoLabel = new JLabel("Welcome");
+        infoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        add(infoLabel, BorderLayout.NORTH);
 
-        JTable bookTable = new JTable(
-            new Object[][]{},
-            new String[]{"Title", "Author", "Price"}
+        bookTable = new JTable(new DefaultTableModel(
+                new Object[]{"Book Name", "Price", "Select"}, 0) {
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 2 ? Boolean.class : String.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2;
+            }
+        });
+
+        add(new JScrollPane(bookTable), BorderLayout.CENTER);
+
+        JButton buyBtn = new JButton("Buy");
+        JButton redeemBtn = new JButton("Redeem Points and Buy");
+        JButton logoutBtn = new JButton("Logout");
+
+        JPanel panel = new JPanel();
+        panel.add(buyBtn);
+        panel.add(redeemBtn);
+        panel.add(logoutBtn);
+
+        add(panel, BorderLayout.SOUTH);
+
+        buyBtn.addActionListener(e -> handleBuy(false));
+        redeemBtn.addActionListener(e -> handleBuy(true));
+        logoutBtn.addActionListener(e -> handleLogout());
+    }
+
+    public void refresh() {
+        BookStoreSystem system = BookStoreSystem.getInstance();
+        Customer customer = (Customer) system.getCurrentUser();
+
+        infoLabel.setText(
+                "Welcome " + customer.getUsername() +
+                ". You have " + customer.getPoints() +
+                " points. Your status is " + customer.getStatusString()
         );
-        bookTable.setRowHeight(20);
-        bookTable.setFillsViewportHeight(true);
 
-        JScrollPane bookScroll = new JScrollPane(bookTable);
-        bookScroll.setPreferredSize(new Dimension(200, 200));
+        DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
+        model.setRowCount(0);
 
-        bookPanel.add(bookLabel, BorderLayout.NORTH);
-        bookPanel.add(bookScroll, BorderLayout.CENTER);
-        bookPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 5));
+        Object[][] data = customer.viewBooks();
+        for (Object[] row : data) {
+            model.addRow(row);
+        }
+    }
 
-        JPanel cartPanel = new JPanel(new BorderLayout());
-        JLabel cartLabel = new JLabel("Your Cart:");
-        cartLabel.setFont(new Font("Arial", Font.BOLD, 14));
+    private ArrayList<Book> getSelectedBooks() {
+        ArrayList<Book> cart = new ArrayList<>();
+        BookStoreSystem system = BookStoreSystem.getInstance();
 
-        JTable cartTable = new JTable(
-            new Object[][]{},
-            new String[]{"Title", "Qty", "Price"}
-        );
-        cartTable.setRowHeight(20);
-        cartTable.setFillsViewportHeight(true);
+        DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
 
-        JScrollPane cartScroll = new JScrollPane(cartTable);
-        cartScroll.setPreferredSize(new Dimension(200, 200));
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Boolean selected = (Boolean) model.getValueAt(i, 2);
 
-        cartPanel.add(cartLabel, BorderLayout.NORTH);
-        cartPanel.add(cartScroll, BorderLayout.CENTER);
-        cartPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
+            if (selected != null && selected) {
+                String name = model.getValueAt(i, 0).toString();
 
-        JSplitPane splitPane = new JSplitPane(
-            JSplitPane.HORIZONTAL_SPLIT,
-            bookPanel,
-            cartPanel
-        );
+                for (Book b : system.getInventory()) {
+                    if (b.getName().equals(name)) {
+                        cart.add(b);
+                        break;
+                    }
+                }
+            }
+        }
+        return cart;
+    }
 
-        splitPane.setResizeWeight(0.5); // equal resize
-        splitPane.setDividerLocation(0.5); // start centered
+    private void handleBuy(boolean redeem) {
+        BookStoreSystem system = BookStoreSystem.getInstance();
+        Customer customer = (Customer) system.getCurrentUser();
 
-        JButton addToCartBtn = new JButton("Add to Cart");
-        JButton viewCartBtn = new JButton("View Cart");
-        JButton checkoutBtn = new JButton("Checkout");
+        ArrayList<Book> cart = getSelectedBooks();
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(addToCartBtn);
-        buttonPanel.add(viewCartBtn);
-        buttonPanel.add(checkoutBtn);
+        if (cart.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No books selected.");
+            return;
+        }
 
-        add(splitPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        double cost = customer.viewCartCost(cart);
+
+        if (redeem) {
+            customer.redeemAndBuy(cart);
+        } else {
+            customer.buyBooks(cart);
+        }
+
+        refresh();
+
+        JOptionPane.showMessageDialog(this, "Total Cost: $" + cost);
+    }
+
+    private void handleLogout() {
+        BookStoreSystem.getInstance().logOut();
+
+        Container parent = this.getParent();
+
+        // go up until we reach Main (outer CardLayout)
+        while (!(parent.getLayout() instanceof CardLayout)) {
+            parent = parent.getParent();
+        }
+
+        CardLayout cl = (CardLayout) parent.getLayout();
+        cl.show(parent, "card2"); // login screen
     }
 }

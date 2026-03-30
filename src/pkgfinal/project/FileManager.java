@@ -55,7 +55,7 @@ public class FileManager {
                 if (parts.length == 2) {
                     String name = parts[0];
                     double price = Double.parseDouble(parts[1]);
-                    list.add(new Book());
+                    list.add(new Book(name,price));
                 }
             }
         } catch (Exception e) {

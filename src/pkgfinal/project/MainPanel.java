@@ -4,16 +4,32 @@
  */
 package pkgfinal.project;
 
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jettman737
  */
 public class MainPanel extends javax.swing.JFrame {
+    BookStoreSystem system = BookStoreSystem.getInstance();
+
 
 
     public MainPanel() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        OwnerStartPanel start = new OwnerStartPanel();
+        OwnerBooksPanel books = new OwnerBooksPanel();
+        OwnerCustomerPanel customers = new OwnerCustomerPanel();
+
+        OwnerDashboardPanel.removeAll();
+        OwnerDashboardPanel.setLayout(new CardLayout());
+
+        OwnerDashboardPanel.add(start, "ownerStart");
+        OwnerDashboardPanel.add(books, "books");
+        OwnerDashboardPanel.add(customers, "customers");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,9 +48,12 @@ public class MainPanel extends javax.swing.JFrame {
         PasswordLabel = new javax.swing.JLabel();
         PasswordField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        CustomerDashboard = new javax.swing.JPanel();
-        CustomerDash = new pkgfinal.project.CustomerDashboard();
-        OwnerDashboard = new javax.swing.JPanel();
+        CustomerDashboardPanel = new javax.swing.JPanel();
+        customerDashboard1 = new pkgfinal.project.CustomerDashboard();
+        OwnerDashboardPanel = new javax.swing.JPanel();
+        ownerStartPanel2 = new pkgfinal.project.OwnerStartPanel();
+        ownerCustomerPanel2 = new pkgfinal.project.OwnerCustomerPanel();
+        ownerBooksPanel2 = new pkgfinal.project.OwnerBooksPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 900));
@@ -113,14 +132,18 @@ public class MainPanel extends javax.swing.JFrame {
 
         Main.add(Login, "card2");
 
-        CustomerDashboard.setPreferredSize(new java.awt.Dimension(1200, 900));
-        CustomerDashboard.setLayout(new java.awt.BorderLayout());
-        CustomerDashboard.add(CustomerDash, java.awt.BorderLayout.CENTER);
+        CustomerDashboardPanel.setPreferredSize(new java.awt.Dimension(1200, 900));
+        CustomerDashboardPanel.setLayout(new java.awt.BorderLayout());
+        CustomerDashboardPanel.add(customerDashboard1, java.awt.BorderLayout.CENTER);
 
-        Main.add(CustomerDashboard, "card3");
+        Main.add(CustomerDashboardPanel, "card3");
 
-        OwnerDashboard.setLayout(new java.awt.BorderLayout());
-        Main.add(OwnerDashboard, "card4");
+        OwnerDashboardPanel.setLayout(new java.awt.CardLayout());
+        OwnerDashboardPanel.add(ownerStartPanel2, "card2");
+        OwnerDashboardPanel.add(ownerCustomerPanel2, "card3");
+        OwnerDashboardPanel.add(ownerBooksPanel2, "card4");
+
+        Main.add(OwnerDashboardPanel, "card4");
 
         getContentPane().add(Main, "card4");
 
@@ -128,15 +151,49 @@ public class MainPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        Main.removeAll();
-        Main.add(CustomerDashboard);
-        Main.repaint();
-        Main.revalidate();
+        String username = UsernameField.getText();
+        String password = PasswordField.getText();
+
+        boolean success = system.login(username, password);
+
+        if (success) {
+            User user = system.getCurrentUser();
+            UsernameField.setText("");
+            PasswordField.setText("");
+
+            if (user instanceof Owner) {
+                switchToOwnerStartScreen();
+            } else if (user instanceof Customer) {
+                switchToCustomerStartScreen((Customer) user);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password");
+        }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void UsernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameFieldActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel CustomerDashboardPanel;
+    private javax.swing.JPanel Login;
+    private javax.swing.JButton LoginButton;
+    private javax.swing.JPanel Main;
+    private javax.swing.JPanel OwnerDashboardPanel;
+    private javax.swing.JTextField PasswordField;
+    private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JTextField UsernameField;
+    private javax.swing.JLabel UsernameLabel;
+    private pkgfinal.project.CustomerDashboard customerDashboard1;
+    private javax.swing.JLabel jLabel1;
+    private pkgfinal.project.OwnerBooksPanel ownerBooksPanel2;
+    private pkgfinal.project.OwnerCustomerPanel ownerCustomerPanel2;
+    private pkgfinal.project.OwnerStartPanel ownerStartPanel2;
+    // End of variables declaration//GEN-END:variables
+
+
 
     /**
      * @param args the command line arguments
@@ -170,21 +227,20 @@ public class MainPanel extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainPanel().setVisible(true);
+                
             }
         });
     }
+    
+    private void switchToOwnerStartScreen() {
+        ((CardLayout) OwnerDashboardPanel.getLayout()).show(OwnerDashboardPanel, "ownerStart");
+        ((CardLayout) Main.getLayout()).show(Main, "card4");
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private pkgfinal.project.CustomerDashboard CustomerDash;
-    private javax.swing.JPanel CustomerDashboard;
-    private javax.swing.JPanel Login;
-    private javax.swing.JButton LoginButton;
-    private javax.swing.JPanel Main;
-    private javax.swing.JPanel OwnerDashboard;
-    private javax.swing.JTextField PasswordField;
-    private javax.swing.JLabel PasswordLabel;
-    private javax.swing.JTextField UsernameField;
-    private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
+    private void switchToCustomerStartScreen(Customer c) {
+        ((CardLayout) Main.getLayout()).show(Main, "card3");
+    }
+
+
+
 }

@@ -1,0 +1,2 @@
+intro to computer science,120.0
+science,250.0
