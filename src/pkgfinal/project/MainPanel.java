@@ -1,23 +1,20 @@
-package pkgfinal.project;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+package pkgfinal.project;
 
 /**
  *
  * @author Jettman737
  */
-public class TestScreen extends javax.swing.JFrame {
+public class MainPanel extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TestScreen
-     */
-    public TestScreen() {
+
+    public MainPanel() {
         initComponents();
+        setLocationRelativeTo(null);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,14 +24,26 @@ public class TestScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Main = new javax.swing.JPanel();
+        Login = new javax.swing.JPanel();
         UsernameLabel = new javax.swing.JLabel();
         UsernameField = new javax.swing.JTextField();
         LoginButton = new javax.swing.JButton();
         PasswordLabel = new javax.swing.JLabel();
         PasswordField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        CustomerDashboard = new javax.swing.JPanel();
+        CustomerDash = new pkgfinal.project.CustomerDashboard();
+        OwnerDashboard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 900));
+        getContentPane().setLayout(new java.awt.CardLayout());
+
+        Main.setPreferredSize(new java.awt.Dimension(1200, 900));
+        Main.setLayout(new java.awt.CardLayout());
+
+        Login.setPreferredSize(new java.awt.Dimension(1200, 900));
 
         UsernameLabel.setText("Username:");
 
@@ -55,56 +64,74 @@ public class TestScreen extends javax.swing.JFrame {
 
         jLabel1.setText("Welcome to the BookStore App");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(167, 167, 167)
-                .addComponent(LoginButton)
-                .addGap(161, 161, 161))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+        javax.swing.GroupLayout LoginLayout = new javax.swing.GroupLayout(Login);
+        Login.setLayout(LoginLayout);
+        LoginLayout.setHorizontalGroup(
+            LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LoginLayout.createSequentialGroup()
+                .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginLayout.createSequentialGroup()
+                        .addContainerGap(558, Short.MAX_VALUE)
+                        .addComponent(LoginButton)
+                        .addGap(80, 80, 80))
+                    .addGroup(LoginLayout.createSequentialGroup()
+                        .addContainerGap(490, Short.MAX_VALUE)
+                        .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(PasswordLabel)
                             .addComponent(UsernameLabel))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(LoginLayout.createSequentialGroup()
                                 .addGap(21, 21, 21)
                                 .addComponent(UsernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jLabel1)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                                .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addContainerGap(490, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        LoginLayout.setVerticalGroup(
+            LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LoginLayout.createSequentialGroup()
+                .addContainerGap(366, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(UsernameLabel)
                     .addComponent(UsernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PasswordLabel)
                     .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(LoginButton)
-                .addGap(79, 79, 79))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
+
+        Main.add(Login, "card2");
+
+        CustomerDashboard.setPreferredSize(new java.awt.Dimension(1200, 900));
+        CustomerDashboard.setLayout(new java.awt.BorderLayout());
+        CustomerDashboard.add(CustomerDash, java.awt.BorderLayout.CENTER);
+
+        Main.add(CustomerDashboard, "card3");
+
+        OwnerDashboard.setLayout(new java.awt.BorderLayout());
+        Main.add(OwnerDashboard, "card4");
+
+        getContentPane().add(Main, "card4");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        System.out.println(UsernameField.getText());
+        Main.removeAll();
+        Main.add(CustomerDashboard);
+        Main.repaint();
+        Main.revalidate();
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void UsernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFieldActionPerformed
@@ -128,26 +155,32 @@ public class TestScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TestScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TestScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TestScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TestScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TestScreen().setVisible(true);
+                new MainPanel().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private pkgfinal.project.CustomerDashboard CustomerDash;
+    private javax.swing.JPanel CustomerDashboard;
+    private javax.swing.JPanel Login;
     private javax.swing.JButton LoginButton;
+    private javax.swing.JPanel Main;
+    private javax.swing.JPanel OwnerDashboard;
     private javax.swing.JTextField PasswordField;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JTextField UsernameField;
