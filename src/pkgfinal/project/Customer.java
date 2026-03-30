@@ -143,9 +143,9 @@ public class Customer extends User {
      * Handles the "Redeem points and Buy" logic.
      * TC = Original Cost - (Points / 100).
      */
-    public void redeemAndBuy(ArrayList<Book> cart) {
+    public double redeemAndBuy(ArrayList<Book> cart) {
         checkRep();
-        if (cart == null || cart.isEmpty()) return;
+        if (cart == null || cart.isEmpty()) return 0;
 
         double originalCost = viewCartCost(cart);
 
@@ -164,6 +164,7 @@ public class Customer extends User {
 
         System.out.println("Redeemed " + pointsRedeemed + " points.");
         System.out.println("Final Transaction Cost: $" + finalCost);
+        return finalCost;
     }
 }
 

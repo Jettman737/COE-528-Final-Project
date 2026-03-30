@@ -118,14 +118,11 @@ public class CustomerDashboard extends JPanel {
     private void handleLogout() {
         BookStoreSystem.getInstance().logOut();
 
-        Container parent = this.getParent();
+    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
-        // go up until we reach Main (outer CardLayout)
-        while (!(parent.getLayout() instanceof CardLayout)) {
-            parent = parent.getParent();
-        }
+    JPanel main = (JPanel) frame.getContentPane().getComponent(0);
+    CardLayout cl = (CardLayout) main.getLayout();
 
-        CardLayout cl = (CardLayout) parent.getLayout();
-        cl.show(parent, "card2"); // login screen
+    cl.show(main, "card2");
     }
 }

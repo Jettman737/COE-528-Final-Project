@@ -33,7 +33,6 @@ public class OwnerCustomerPanel extends JPanel {
         backBtn.addActionListener(e -> goBack());
 
         loadCustomers();
-        System.out.println("Customers: " + BookStoreSystem.getInstance().getCustomerList().size());
     }
 
     private void addCustomer() {
@@ -41,8 +40,26 @@ public class OwnerCustomerPanel extends JPanel {
         String password = JOptionPane.showInputDialog("Enter password:");
 
         if (username != null && password != null) {
+            username = username.trim();
+            password = password.trim();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Username and password cannot be empty.");
+                return;
+            }
+
+            // Check if username already exists
+            for (Customer c : BookStoreSystem.getInstance().getCustomerList()) {
+                if (c.getUsername().equalsIgnoreCase(username)) {
+                    JOptionPane.showMessageDialog(this, "Username already exists!");
+                    return;
+                }
+            }
+
             Customer c = new Customer(username, password, BookStoreSystem.getInstance());
             BookStoreSystem.getInstance().addCustomer(c);
+
+            System.out.println("Added customer: " + c.getUsername() + " / " + c.getPassword());
             loadCustomers();
         }
     }
@@ -53,20 +70,25 @@ public class OwnerCustomerPanel extends JPanel {
         if (row >= 0) {
             String username = (String) model.getValueAt(row, 0);
 
+            Customer toRemove = null;
             for (Customer c : BookStoreSystem.getInstance().getCustomerList()) {
                 if (c.getUsername().equals(username)) {
-                    BookStoreSystem.getInstance().removeCustomer(c);
+                    toRemove = c;
                     break;
                 }
+            }
+
+            if (toRemove != null) {
+                BookStoreSystem.getInstance().removeCustomer(toRemove);
+                System.out.println("Deleted customer: " + toRemove.getUsername());
             }
 
             loadCustomers();
         }
     }
 
-    private void loadCustomers() {
+    public void loadCustomers() {
         model.setRowCount(0);
-
         for (Customer c : BookStoreSystem.getInstance().getCustomerList()) {
             model.addRow(new Object[]{
                     c.getUsername(),
@@ -74,6 +96,7 @@ public class OwnerCustomerPanel extends JPanel {
                     c.getPoints()
             });
         }
+        System.out.println("Customers now: " + BookStoreSystem.getInstance().getCustomerList().size());
     }
 
     private void goBack() {
