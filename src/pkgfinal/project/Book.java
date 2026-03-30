@@ -9,8 +9,14 @@ package pkgfinal.project;
  * @author Jettman737
  */
 public class Book {
+    
     private String name;
     private double price;
+    
+    public Book(String n, double p){
+        name = n;
+        price = p;
+    }
     
     public String getName(){
     return name;

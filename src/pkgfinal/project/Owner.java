@@ -14,9 +14,7 @@ public class Owner extends User {
     }
 
     public void addBooks(String name, double price) {
-        Book newBook = new Book();
-        newBook.setName(name);
-        newBook.setPrice(price);
+        Book newBook = new Book(name, price);
 
         bookStoreSystem.addBook(newBook);
 
